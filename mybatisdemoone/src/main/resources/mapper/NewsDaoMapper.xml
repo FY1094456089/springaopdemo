@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mb.dao.NewsDao">
+
+    <!-- 部门列表select 查询标签 id和接口中的方法名称对象一致 parameterType方法的参数 resultType返回值类型-->
+    <select id="getList" resultType="map">
+         select newid,title,content,typeid,addtime from tb_news where title=#{title}
+    </select>
+    <!-- 部门添加-->
+    <insert id="add" >
+        <!--insert into dept values(newid,#{dname,jdbcType=VARCHAR},#{loc})-->
+        insert into tb_news values(seq_news_id.nextval,#{title},#{content},#{typeid},sysdate)
+    </insert>
+    <!-- 根据部门编号查部门信息-->
+    <select id="getById"  resultType="map">
+        select * from tb_news where newid=#{newid}
+    </select>
+    <!-- 更新-->
+    <update id="update" >
+        update tb_news set title=#{title},content=#{content},typeid=#{typeid},addtime=sysdate where newid=#{NEWID}
+    </update>
+    <!-- 删除-->
+    <delete id="delete" >
+        delete from tb_news where newid=#{NEWID}
+    </delete>
+
+
+<!--多对一-->
+  <select id="manyToOne" resultMap="newsAndType">
+      select n.*,t.name from tb_news n,tb_newstype t where n.typeid=t.typeid
+  </select>
+    <!--高级映射 多对一-->
+    <resultMap id="newsAndType" type="news">
+        <id column="newid" property="newId"></id>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="addTime" property="addTime"></result>
+        <association property="newsType" javaType="NewsType">
+            <id column="typeid" property="typeId"></id>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+</mapper>
