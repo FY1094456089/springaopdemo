@@ -22,5 +22,6 @@ public class AopTest {
         UserServiceImpl userService=(UserServiceImpl) applicationContext.getBean("userService");
         userService.delete();
         userService.add();
+        System.out.println("法律框架爱开了房间爱立方！！");
     }
 }
